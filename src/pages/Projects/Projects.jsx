@@ -4,22 +4,23 @@ import logo from '../../assets/logo.svg';
 import Filter from "./components/Filter";
 import ProjectsList from "./components/ProjectsList";
 import React from "react";
+import projectsData from "../../database/projects.json";
 
 export default function Projects () {
-   const [categoryId, seCategoryId] = React.useState(0);
-   const [roleId, seRoleId] = React.useState(0);
+   const [filteredProjects, setFilteredProjects] = React.useState(projectsData);
 
    const [isFilter, setIsFilter] = React.useState(false);
 
    const toggleFilter = () => {setIsFilter(!isFilter);}
 
-   const changeCategoryId = (catId) => {
-      seCategoryId(catId);
-   }
-
-   const changeRoleId = (rolId) => {
-      seRoleId(rolId);
-   }
+   const handleFilterChange = (roleFilters, themeFilters) => {
+      const filtered = projectsData.filter(project => {
+          const matchesRoles = roleFilters.every(role => project.roles.includes(role));
+          const matchesThemes = themeFilters.every(theme => project.categoryId === theme);
+          return matchesRoles && matchesThemes;
+      });
+      setFilteredProjects(filtered);
+  };
 
    return (
    <Box sx={{ bgcolor: 'background.default', mt: 5}}>
@@ -32,15 +33,13 @@ export default function Projects () {
          <Filter 
             isFilter={isFilter}
             toggleFilter={toggleFilter}
-            changeCategoryId={changeCategoryId}
-            changeRoleId={changeRoleId}
+            handleFilterChange={handleFilterChange}
          />
 
       </div>
 
       <ProjectsList 
-         categoryId={categoryId}
-         roleId={roleId}
+         filteredProjects={filteredProjects}
       />
       
     </Box>

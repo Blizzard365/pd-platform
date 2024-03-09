@@ -2,7 +2,13 @@ import React from 'react';
 import roleData from '../../../database/role.json';
 import RoleItem from './RoleItem';
 
-export default function RoleList({changeRoleId}) {
+export default function RoleList({setRoleFilters}) {
+  const [roleFilterList, setRoleFilterList] = React.useState([]);
+
+  React.useEffect(() => {
+    setRoleFilters(roleFilterList);
+  }, [roleFilterList])
+
   return (
     <div>
         <span><b className='filter_name'>Роль в проекте</b></span>
@@ -10,7 +16,8 @@ export default function RoleList({changeRoleId}) {
             roleData.map((role) => (
                 <RoleItem
                     roleItem={role}
-                    changeRoleId={changeRoleId}
+                    roleFilterList={roleFilterList}
+                    setRoleFilterList={setRoleFilterList}
                 />
             ))
         }

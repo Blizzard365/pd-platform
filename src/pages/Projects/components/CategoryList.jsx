@@ -2,7 +2,13 @@ import React from 'react';
 import categoryData from '../../../database/category.json';
 import CategoryItem from './CategoryItem';
 
-export default function CategoryList({changeCategoryId}) {
+export default function CategoryList({setThemeFilters}) {
+  const [categoryFilterList, setCategoryFilterList] = React.useState([]);
+
+  React.useEffect(() => {
+    setThemeFilters([...categoryFilterList]);
+  }, [categoryFilterList])
+
   return (
     <div>
         <span><b className='filter_name'>Тематика</b></span>
@@ -10,7 +16,8 @@ export default function CategoryList({changeCategoryId}) {
             categoryData.map((category) => (
                 <CategoryItem 
                     categoryItem={category}
-                    changeCategoryId={changeCategoryId}
+                    categoryFilterList={categoryFilterList}
+                    setCategoryFilterList={setCategoryFilterList}
                 />
             ))
         }

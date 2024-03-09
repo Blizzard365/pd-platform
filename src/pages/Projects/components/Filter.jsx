@@ -2,7 +2,14 @@ import React from 'react';
 import CategoryList from './CategoryList';
 import RoleList from './RoleList';
 
-export default function Filter({changeCategoryId, changeRoleId, toggleFilter, isFilter}) {
+export default function Filter({toggleFilter, isFilter, handleFilterChange}) {
+    const [roleFilters, setRoleFilters] = React.useState([]);
+    const [themeFilters, setThemeFilters] = React.useState([]);
+
+    React.useEffect(() => {
+        handleFilterChange(roleFilters, themeFilters);
+    }, [roleFilters, themeFilters])
+
     const onClickOpenFilter = () => {
         toggleFilter();
     }
@@ -14,10 +21,10 @@ export default function Filter({changeCategoryId, changeRoleId, toggleFilter, is
             isFilter && (
                 <div className={isFilter ? "project_filter_open" : "project_filter_close"}>
                     <CategoryList 
-                        changeCategoryId={changeCategoryId}
+                        setThemeFilters={setThemeFilters}
                     />
                     <RoleList
-                        changeRoleId={changeRoleId}
+                        setRoleFilters={setRoleFilters}
                     />
                 </div>
             ) 
